@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Child from "./Child";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [timeString, setTimeString] = useState("");
+  const [count, setCount] = useState(0);
+
+  const setCurrentTime = () => {
+    if (count >= 0) {
+      setTimeout(() => {
+        let min;
+        let sec;
+        if (count > 60) {
+          min = Math.floor(count / 60);
+          sec = count % 60;
+        } else {
+          min = 0;
+          sec = count;
+        }
+        setTimeString(`${min}:${sec}`);
+        setCount(count - 1);
+      }, 1000);
+    }
+  };
+
+  const setTheCounter = (int) => {
+    setCount(int * 60);
+  };
+
+  useEffect(() => {
+    setTheCounter(3);
+  }, []);
+
+  useEffect(() => {
+    setCurrentTime();
+  }, [count]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hello</h1>
+      <Child timeString={timeString}></Child>
     </div>
   );
 }
